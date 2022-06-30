@@ -16,7 +16,7 @@ public class Obstaculo extends GameObject implements Updatable, Renderable, Coll
 
 	private Rectangle collider;
 	Punto posicion;
-	
+	//
 	public Obstaculo(Punto posicion) {
 		
 		this.posicion=posicion;
