@@ -57,16 +57,16 @@ public class AutomovilBot extends Automovil implements Updatable, Renderable, Co
 
 	public void serChocado(Automovil chocador) {
 
-		if (!chocador.isModoFantasma()) {
-			int sentidoChoque = -1;
-			if (this.posicion.getX() > chocador.posicion.getX()) {
-				sentidoChoque = 1;
-			}
-			this.perderControl(sentidoChoque);
-			this.acelerar();
-			chocador.frenar();
-			chocador.perderControl(sentidoChoque * -1);
-		}
+//		if (!chocador.isModoFantasma()) {
+//			int sentidoChoque = -1;
+//			if (this.posicion.getX() > chocador.posicion.getX()) {
+//				sentidoChoque = 1;
+//			}
+//			this.perderControl(sentidoChoque);
+//			this.acelerar();
+//			chocador.frenar();
+//			chocador.perderControl(sentidoChoque * -1);
+//		}
 	}
 
 	@Override

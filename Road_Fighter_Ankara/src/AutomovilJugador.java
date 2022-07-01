@@ -27,6 +27,13 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 	private double deltaTime;
 	private boolean fx=false;
 	
+	private boolean modoFantasma=false;
+	private long CooldownmodoFantasma=999999999;
+	private long timeModoFantasma=-1;
+	private long  timeExecutionModoFantasma=999999999;
+	
+	
+	
 	private boolean choque=false;
 	
 	public AutomovilJugador(int color, Punto posicion) {
@@ -113,41 +120,23 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 		}
 	}
 
+	public void setModoFantasma(boolean modoFantasma) {
+		this.modoFantasma = modoFantasma;
+	}
+	
 	public void iniciarHabilidad() {
-		this.setModoFantasma(true);
 
-		Timer timer = new Timer();
-
-		TimerTask tarea = new TimerTask() {
-
-			@Override
-			public void run() {
-				duracionSkill--;
-
-				if (duracionSkill == 0) {
-					setModoFantasma(false);
-					timer.cancel();
-				}
-			}
-		};
-
-		timer.scheduleAtFixedRate(tarea, 0, 1000);
-
-		Timer timerCooldown = new Timer();
-
-		TimerTask tarea2 = new TimerTask() {
-
-			@Override
-			public void run() {
-				coolDown--;
-
-				if (coolDown == 0) {
-					timerCooldown.cancel();
-				}
-			}
-		};
-
-		timerCooldown.scheduleAtFixedRate(tarea2, 0, 1000);
+		if(System.nanoTime() > timeModoFantasma + (CooldownmodoFantasma * 20) ) {
+			System.out.println("Tiempo sistema" + System.nanoTime());
+			System.out.println("Tiempo modoFantasma" + timeModoFantasma);
+			this.setModoFantasma(true);
+			timeModoFantasma=System.nanoTime();
+		}
+	}
+	public void updateModoFantasma() {
+		if(System.nanoTime() > timeModoFantasma + (timeExecutionModoFantasma * 10)  ) {
+			this.setModoFantasma(false);
+		}
 	}
 
 	public void destroy() {
@@ -217,26 +206,16 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 	}
 
 	public void collide(Collideable collideable) {
-		
-		Obstaculo obs = new Obstaculo(new Punto(0,0));
-		AutomovilBot ab = new AutomovilBot(2, new Punto(0,0));
-		
 		//Si choco un obstaculo pierdo el control
-		if(collideable.getClass().equals(obs.getClass())) {
+		if(collideable.getClass().equals(Obstaculo.class) && !modoFantasma) {
 				setX(posicion.getX() + speed * deltaTime * 4 );
 				collider.setX(posicion.getX());
 		}
-
-		if(collideable.getClass().equals(ab.getClass())) {
+		else if(collideable.getClass().equals(AutomovilBot.class) && !modoFantasma) {
 			setX(posicion.getX() + speed * deltaTime * 4 );
 			collider.setX(posicion.getX());
 			System.out.println("Chocó");
 		}
-		
-		
-		//if(health==0) {
-			
-		//}
 	}
 
 	public boolean isDead() {
@@ -265,5 +244,8 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 	
 	public void setChoque(boolean b) {
 		this.choque=b;
+	}
+	public boolean isModoFantasma() {
+		return this.modoFantasma;
 	}
 }

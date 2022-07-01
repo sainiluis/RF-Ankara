@@ -70,6 +70,8 @@ public class GameSceneHandler extends SceneHandler {
 				case ESCAPE:
 					g.startMenu();
 					break;
+				case Z:
+					a1.iniciarHabilidad();
 				default:
 					break;
 				}
@@ -165,6 +167,7 @@ public class GameSceneHandler extends SceneHandler {
 		super.update(delta);
 		score.increase(road.getScore());
 		scoreFinal = road.getScore();
+		a1.updateModoFantasma();
 
 		checkFinish();
 		if (!ended) {

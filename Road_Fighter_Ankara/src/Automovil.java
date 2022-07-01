@@ -8,7 +8,7 @@ public abstract class Automovil extends GameObject implements Updatable, Rendera
 	protected double velocidad;
 	protected Punto posicion;
 	private final int VELOCIDAD_MAXIMA = 50;
-	private boolean modoFantasma;
+	
 
 	protected final int width = 40;
 	protected final int height = 78;
@@ -20,7 +20,7 @@ public abstract class Automovil extends GameObject implements Updatable, Rendera
 	public Automovil(int color, Punto posicion) {
 
 		this.posicion = posicion;
-		this.modoFantasma = false;
+
 	}
 
 	public abstract Node getRender();
@@ -64,11 +64,7 @@ public abstract class Automovil extends GameObject implements Updatable, Rendera
 		return velocidad;
 	}
 
-	public boolean isModoFantasma() {
-		return this.modoFantasma;
-	}
 
-	public void setModoFantasma(boolean modoFantasma) {
-		this.modoFantasma = modoFantasma;
-	}
+
+
 }
