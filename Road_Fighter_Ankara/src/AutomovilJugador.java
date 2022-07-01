@@ -28,9 +28,9 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 	private boolean fx=false;
 	
 	private boolean modoFantasma=false;
-	private long CooldownmodoFantasma=999999999;
+	private long CooldownmodoFantasma=5000;
 	private long timeModoFantasma=-1;
-	private long  timeExecutionModoFantasma=999999999;
+	private long  timeExecutionModoFantasma=10000;
 	
 	
 	
@@ -126,15 +126,15 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 	
 	public void iniciarHabilidad() {
 
-		if(System.nanoTime() > timeModoFantasma + (CooldownmodoFantasma * 20) ) {
-			System.out.println("Tiempo sistema" + System.nanoTime());
+		if(System.currentTimeMillis() > timeModoFantasma + (CooldownmodoFantasma) ) {
+			System.out.println("Tiempo sistema" + System.currentTimeMillis());
 			System.out.println("Tiempo modoFantasma" + timeModoFantasma);
 			this.setModoFantasma(true);
-			timeModoFantasma=System.nanoTime();
+			timeModoFantasma=System.currentTimeMillis();
 		}
 	}
 	public void updateModoFantasma() {
-		if(System.nanoTime() > timeModoFantasma + (timeExecutionModoFantasma * 10)  ) {
+		if(System.currentTimeMillis() > timeModoFantasma + (timeExecutionModoFantasma)  ) {
 			this.setModoFantasma(false);
 		}
 	}
