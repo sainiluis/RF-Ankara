@@ -45,7 +45,8 @@ public class Score extends GameObject implements Renderable {
 	}
 
 	public void increase(double score) {
-		scoreText.setText(" Score:\n" + (int)score/10);
+		this.score+=score;
+		scoreText.setText(" Score:\n" + this.score);
 	}
 
 	@Override

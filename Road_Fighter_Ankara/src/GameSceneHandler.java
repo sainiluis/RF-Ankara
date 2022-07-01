@@ -163,14 +163,14 @@ public class GameSceneHandler extends SceneHandler {
 
 	public void update(double delta) {
 		super.update(delta);
-		score.increase(road.getScore());
+		score.increase(delta);
 		scoreFinal = road.getScore();
 
 		checkFinish();
 		if (!ended) {
 			checkColliders();
 			if (a1.isDead()) {
-				
+
 				a1.deadAnimation();
 				gameOver = new GameOver(scoreFinal, !a1.isDead());
 				GameObjectBuilder.getInstance().add(gameOver);
@@ -237,13 +237,6 @@ public class GameSceneHandler extends SceneHandler {
 						
 					}
 				}
-				
-//				if(!(intersect.getBoundsInLocal().getWidth() != -1)) {
-//					if(a1.getChoque()) {
-//						a1.setChoque(false);
-//						System.out.println("Chocó");
-//					}
-//				}
 				
 			}
 		}
