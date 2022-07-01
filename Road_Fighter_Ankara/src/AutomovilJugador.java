@@ -9,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 public class AutomovilJugador extends Automovil implements Updatable, Renderable, Collidator {
@@ -23,13 +24,22 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 	private boolean speedUp = false;
 	private boolean dead = false;
 	SpriteAnimation explotionAnimation;
-
+	private double deltaTime;
+	private boolean fx=false;
+	
+	private boolean choque=false;
+	
 	public AutomovilJugador(int color, Punto posicion) {
 		super(color, posicion);
 		this.coolDown = 25;
 		this.duracionSkill = 7;
 		this.velocidad = 0;
 
+		setX(posicion.getX());
+		setY(posicion.getY());
+	}
+	
+	public void iniciarFX() {
 		collider = new Rectangle(posicion.getX() - width / 2, posicion.getY() - height , 45, 88);
 		collider.setFill(null);
 		collider.setStroke(Color.FUCHSIA);
@@ -37,16 +47,17 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 		Image spriteImages = new Image("file:src/files/sprites.png", 530, 100, false, false);
 
 		render = new ImageView(spriteImages);
+		render.setX(posicion.getX() - width / 2);
+		render.setY(posicion.getY() - height);
 		resetViewport();
 		
 		render.setViewOrder(10);
-
-		setX(posicion.getX());
-		setY(posicion.getY());
-
+		
 		explotionAnimation = new SpriteAnimation(render, Duration.millis(200), 6, 1, 81, 7, 24, 43, 86);
 
 		explotionAnimation.setCycleCount(Animation.INDEFINITE);
+		
+		fx=true;
 	}
 
 	private void resetViewport() {
@@ -55,14 +66,18 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 
 	public void setX(double x) {
 		posicion.setX(x);
-		render.setX(x);
-		collider.setX(x);
+		if(fx) {
+			render.setX(x);
+			collider.setX(x);
+		}
 	}
 
 	public void setY(double y) {
 		posicion.setY(y);
-		render.setY(y);
-		collider.setY(y);
+		if(fx) {
+			render.setY(y);
+			collider.setY(y);
+		}
 	}
 
 	@Override
@@ -184,13 +199,15 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 
 	@Override
 	public void update(double deltaTime) {
+		this.deltaTime=deltaTime;
 		if (directionLeft || directionRight) {
 			int direction = directionLeft ? -1 : (directionRight ? 1 : 0);
-
 			if ((posicion.getX() + direction * speed * deltaTime > 180)
 					&& (posicion.getX() + direction * speed * deltaTime < 520)) {
 				setX(posicion.getX() + direction * speed * deltaTime);
-				collider.setX(posicion.getX());
+				if(fx) {
+					collider.setX(posicion.getX());
+				}
 			}
 		}
 	}
@@ -204,13 +221,18 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 		Obstaculo obs = new Obstaculo(new Punto(0,0));
 		AutomovilBot ab = new AutomovilBot(2, new Punto(0,0));
 		
+		//Si choco un obstaculo pierdo el control
 		if(collideable.getClass().equals(obs.getClass())) {
-			
+				setX(posicion.getX() + speed * deltaTime * 4 );
+				collider.setX(posicion.getX());
+		}
+
+		if(collideable.getClass().equals(ab.getClass())) {
+			setX(posicion.getX() + speed * deltaTime * 4 );
+			collider.setX(posicion.getX());
+			System.out.println("Chocó");
 		}
 		
-		if(collideable.getClass().equals(ab.getClass())) {
-			dead = true;
-		}
 		
 		//if(health==0) {
 			
@@ -231,5 +253,17 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 	
 	public void restarHealth() {
 		health--;
+	}
+	
+	public void setDead(boolean b) {
+		this.dead = b;
+	}
+	
+	public boolean getChoque() {
+		return choque;
+	}
+	
+	public void setChoque(boolean b) {
+		this.choque=b;
 	}
 }

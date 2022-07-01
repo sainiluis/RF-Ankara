@@ -18,7 +18,7 @@ public class AutomovilBot extends Automovil implements Updatable, Renderable, Co
 		super(color, posicion);
 		this.velocidad = VELOCIDAD_CONSTANTE;
 		
-		int r = (int) (Math.random() * (6 ));
+		int r = (int) (Math.random() * (7));
 
 		Image spriteImages = new Image("file:src/files/bot" + "0" + r + ".png", 40, 78, false, false);
 

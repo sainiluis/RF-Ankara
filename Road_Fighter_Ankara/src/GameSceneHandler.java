@@ -115,6 +115,7 @@ public class GameSceneHandler extends SceneHandler {
 
 		score = new Score();
 		a1 = new AutomovilJugador(2, new Punto(380, 340));
+		a1.iniciarFX();
 		road = new Road();
 		botBuilder = new BotBuilder();
 		obstaculoBuilder = new ObstaculoBuilder();
@@ -224,6 +225,9 @@ public class GameSceneHandler extends SceneHandler {
 				// XXX Si el substract es distinto???
 				// Check intersects
 				if (intersect.getBoundsInLocal().getWidth() != -1) {
+//					road.setSpeedUp(false);
+//					GameObjectBuilder.getInstance().getBots(false);
+//					GameObjectBuilder.getInstance().getObstaculos(false);
 					collidator.collide(collideable);
 				} else {
 					// Check contains
@@ -233,6 +237,14 @@ public class GameSceneHandler extends SceneHandler {
 						
 					}
 				}
+				
+//				if(!(intersect.getBoundsInLocal().getWidth() != -1)) {
+//					if(a1.getChoque()) {
+//						a1.setChoque(false);
+//						System.out.println("Chocó");
+//					}
+//				}
+				
 			}
 		}
 	}
