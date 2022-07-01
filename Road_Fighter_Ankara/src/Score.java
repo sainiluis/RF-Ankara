@@ -11,7 +11,7 @@ import javafx.scene.text.TextAlignment;
 
 public class Score extends GameObject implements Renderable {
 	private final int Y = 15;
-	private int score = 0;
+	private double score = 0;
 
 	private Text scoreText;
 	private Text maxScoreText;
@@ -44,9 +44,23 @@ public class Score extends GameObject implements Renderable {
 		return render;
 	}
 
-	public void increase(double score) {
-		this.score+=score;
-		scoreText.setText(" Score:\n" + this.score);
+	public void increase(double n) {
+		
+//		if(b==true) {
+//			this.score+=1;
+//		}
+		
+		this.score+=n;
+
+		scoreText.setText(" Score:\n" + (int)this.score);
+	}
+	
+	public void decrease(int n) {
+		this.score-=n;
+	}
+	
+	public double getScore() {
+		return this.score;
 	}
 
 	@Override

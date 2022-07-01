@@ -18,6 +18,7 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 	private ImageView render;
 	private int health = 2;
 
+	private boolean modoFantasma=false;
 	private final int speed = 300; // pixeles x seg
 	private boolean directionLeft = false;
 	private boolean directionRight = false;
@@ -28,6 +29,12 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 	private boolean fx=false;
 	
 	private boolean choque=false;
+	
+	private long CooldownmodoFantasma=20000;
+    private long timeModoFantasma=-1;
+    private long  timeExecutionModoFantasma=10000;
+    
+    private double diferenciaCooldown;
 	
 	public AutomovilJugador(int color, Punto posicion) {
 		super(color, posicion);
@@ -80,75 +87,75 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 		}
 	}
 
-	@Override
-	public void explotar() {
-		if (this.isModoFantasma() == false) {
-			this.velocidad = 0;
-		}
-
-	}
-
-	@Override
-	public void perderControl(int sentido) {
-		if (this.isModoFantasma() == false) {
-			this.posicion.sumarX(sentido);
-		}
-	}
+//	@Override
+//	public void explotar() {
+//		if (this.isModoFantasma() == false) {
+//			this.velocidad = 0;
+//		}
+//
+//	}
+//
+//	@Override
+//	public void perderControl(int sentido) {
+//		if (this.isModoFantasma() == false) {
+//			this.posicion.sumarX(sentido);
+//		}
+//	}
 
 	public void moverse(double sentido) {
 		this.posicion.sumarX(sentido);
 	}
 
-	public void serChocado(Automovil chocador) {
+//	public void serChocado(Automovil chocador) {
+//
+//		if (!this.isModoFantasma()) {
+//			int sentidoChoque = -1;
+//			if (this.posicion.getX() > chocador.posicion.getX()) {
+//				sentidoChoque = 1;
+//			}
+//			this.perderControl(sentidoChoque);
+//			this.acelerar();
+//			chocador.frenar();
+//			chocador.perderControl(sentidoChoque * -1);
+//		}
+//	}
 
-		if (!this.isModoFantasma()) {
-			int sentidoChoque = -1;
-			if (this.posicion.getX() > chocador.posicion.getX()) {
-				sentidoChoque = 1;
-			}
-			this.perderControl(sentidoChoque);
-			this.acelerar();
-			chocador.frenar();
-			chocador.perderControl(sentidoChoque * -1);
-		}
-	}
-
-	public void iniciarHabilidad() {
-		this.setModoFantasma(true);
-
-		Timer timer = new Timer();
-
-		TimerTask tarea = new TimerTask() {
-
-			@Override
-			public void run() {
-				duracionSkill--;
-
-				if (duracionSkill == 0) {
-					setModoFantasma(false);
-					timer.cancel();
-				}
-			}
-		};
-
-		timer.scheduleAtFixedRate(tarea, 0, 1000);
-
-		Timer timerCooldown = new Timer();
-
-		TimerTask tarea2 = new TimerTask() {
-
-			@Override
-			public void run() {
-				coolDown--;
-
-				if (coolDown == 0) {
-					timerCooldown.cancel();
-				}
-			}
-		};
-
-		timerCooldown.scheduleAtFixedRate(tarea2, 0, 1000);
-	}
+//	public void iniciarHabilidad() {
+//		this.setModoFantasma(true);
+//
+//		Timer timer = new Timer();
+//
+//		TimerTask tarea = new TimerTask() {
+//
+//			@Override
+//			public void run() {
+//				duracionSkill--;
+//
+//				if (duracionSkill == 0) {
+//					setModoFantasma(false);
+//					timer.cancel();
+//				}
+//			}
+//		};
+//
+//		timer.scheduleAtFixedRate(tarea, 0, 1000);
+//
+//		Timer timerCooldown = new Timer();
+//
+//		TimerTask tarea2 = new TimerTask() {
+//
+//			@Override
+//			public void run() {
+//				coolDown--;
+//
+//				if (coolDown == 0) {
+//					timerCooldown.cancel();
+//				}
+//			}
+//		};
+//
+//		timerCooldown.scheduleAtFixedRate(tarea2, 0, 1000);
+//	}
 
 	public void destroy() {
 		// TODO Auto-generated method stub
@@ -199,6 +206,7 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 
 	@Override
 	public void update(double deltaTime) {
+
 		this.deltaTime=deltaTime;
 		if (directionLeft || directionRight) {
 			int direction = directionLeft ? -1 : (directionRight ? 1 : 0);
@@ -217,27 +225,17 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 	}
 
 	public void collide(Collideable collideable) {
-		
-		Obstaculo obs = new Obstaculo(new Punto(0,0));
-		AutomovilBot ab = new AutomovilBot(2, new Punto(0,0));
-		
-		//Si choco un obstaculo pierdo el control
-		if(collideable.getClass().equals(obs.getClass())) {
-				setX(posicion.getX() + speed * deltaTime * 4 );
-				collider.setX(posicion.getX());
-		}
-
-		if(collideable.getClass().equals(ab.getClass())) {
-			setX(posicion.getX() + speed * deltaTime * 4 );
-			collider.setX(posicion.getX());
-			System.out.println("Chocó");
-		}
-		
-		
-		//if(health==0) {
-			
-		//}
-	}
+        //Si choco un obstaculo pierdo el control
+        if(collideable.getClass().equals(Obstaculo.class) && !modoFantasma) {
+                setX(posicion.getX() + speed * deltaTime * 4 );
+                collider.setX(posicion.getX());
+        }
+        else if(collideable.getClass().equals(AutomovilBot.class) && !modoFantasma) {
+            setX(posicion.getX() + speed * deltaTime * 4 );
+            collider.setX(posicion.getX());
+            System.out.println("Chocó");
+        }
+    }
 
 	public boolean isDead() {
 		return dead;
@@ -266,4 +264,35 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 	public void setChoque(boolean b) {
 		this.choque=b;
 	}
+	
+	public void iniciarHabilidad() {
+
+        if(System.currentTimeMillis() > timeModoFantasma + (CooldownmodoFantasma) ) {
+            System.out.println("Tiempo sistema" + System.nanoTime());
+            System.out.println("Tiempo modoFantasma" + timeModoFantasma);
+            this.setModoFantasma(true);
+            timeModoFantasma=System.currentTimeMillis();
+        }
+    }
+    public void updateModoFantasma() {
+        if(System.currentTimeMillis() > timeModoFantasma + (timeExecutionModoFantasma)  ) {
+            this.setModoFantasma(false);
+        }
+    }
+    
+    public void setModoFantasma(boolean modoFantasma) {
+        this.modoFantasma = modoFantasma;
+    }
+    
+    public boolean isModoFantasma() {
+        return this.modoFantasma;
+    }
+    
+    public double getTiempoActivo() {
+        return ((System.currentTimeMillis()-this.timeModoFantasma-this.timeExecutionModoFantasma)*-1)/1000;
+    }
+    
+    public double getCoolDown() {
+        return ((System.currentTimeMillis()-this.timeModoFantasma-this.CooldownmodoFantasma)*-1)/1000;
+    }
 }

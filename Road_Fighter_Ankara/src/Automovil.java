@@ -8,7 +8,7 @@ public abstract class Automovil extends GameObject implements Updatable, Rendera
 	protected double velocidad;
 	protected Punto posicion;
 	private final int VELOCIDAD_MAXIMA = 50;
-	private boolean modoFantasma;
+	
 
 	protected final int width = 40;
 	protected final int height = 78;
@@ -20,7 +20,6 @@ public abstract class Automovil extends GameObject implements Updatable, Rendera
 	public Automovil(int color, Punto posicion) {
 
 		this.posicion = posicion;
-		this.modoFantasma = false;
 	}
 
 	public abstract Node getRender();
@@ -29,9 +28,9 @@ public abstract class Automovil extends GameObject implements Updatable, Rendera
 
 	protected abstract void setX(double d);
 
-	public abstract void explotar();
-
-	public abstract void perderControl(int sentido);
+//	public abstract void explotar();
+//
+//	public abstract void perderControl(int sentido);
 
 	public void avanzar() {
 		this.posicion.incY(this.velocidad);
@@ -56,19 +55,11 @@ public abstract class Automovil extends GameObject implements Updatable, Rendera
 		}
 	}
 
-	public void chocar(AutomovilBot chocado) {
-		chocado.serChocado(this);
-	}
+//	public void chocar(AutomovilBot chocado) {
+//		chocado.serChocado(this);
+//	}
 
 	public double getVelocidad() {
 		return velocidad;
-	}
-
-	public boolean isModoFantasma() {
-		return this.modoFantasma;
-	}
-
-	public void setModoFantasma(boolean modoFantasma) {
-		this.modoFantasma = modoFantasma;
 	}
 }

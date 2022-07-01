@@ -36,11 +36,11 @@ public class AutomovilBot extends Automovil implements Updatable, Renderable, Co
 		setY(posicion.getY());
 	}
 
-	@Override
-	public void explotar() {
-		// TODO Auto-generated method stub
-		// Eliminar auto
-	}
+//	@Override
+//	public void explotar() {
+//		// TODO Auto-generated method stub
+//		// Eliminar auto
+//	}
 
 	@Override
 	public void update(double deltaTime) {
@@ -55,25 +55,25 @@ public class AutomovilBot extends Automovil implements Updatable, Renderable, Co
 		}
 	}
 
-	public void serChocado(Automovil chocador) {
+//	public void serChocado(Automovil chocador) {
+//
+//		if (!chocador.isModoFantasma()) {
+//			int sentidoChoque = -1;
+//			if (this.posicion.getX() > chocador.posicion.getX()) {
+//				sentidoChoque = 1;
+//			}
+//			this.perderControl(sentidoChoque);
+//			this.acelerar();
+//			chocador.frenar();
+//			chocador.perderControl(sentidoChoque * -1);
+//		}
+//	}
 
-		if (!chocador.isModoFantasma()) {
-			int sentidoChoque = -1;
-			if (this.posicion.getX() > chocador.posicion.getX()) {
-				sentidoChoque = 1;
-			}
-			this.perderControl(sentidoChoque);
-			this.acelerar();
-			chocador.frenar();
-			chocador.perderControl(sentidoChoque * -1);
-		}
-	}
-
-	@Override
-	public void perderControl(int sentido) {
-		this.posicion.sumarX(sentido);
-
-	}
+//	@Override
+//	public void perderControl(int sentido) {
+//		this.posicion.sumarX(sentido);
+//
+//	}
 
 	@Override
 	public Node getRender() {
