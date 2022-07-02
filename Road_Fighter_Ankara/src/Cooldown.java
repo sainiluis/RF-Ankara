@@ -27,7 +27,8 @@ public class Cooldown extends GameObject implements Renderable {
 		render.setPrefWidth(100);
 
 		coolDown.setTextAlignment(TextAlignment.CENTER);
-		coolDown.setFont(Font.font("Bauhaus 93", 20));
+		Font font = Font.loadFont(ClassLoader.getSystemResource("files/road-fighter-score.ttf").toString(), 30);
+		coolDown.setFont(font);
 
 		DropShadow ds = new DropShadow();
 		ds.setColor(Color.BLACK);
