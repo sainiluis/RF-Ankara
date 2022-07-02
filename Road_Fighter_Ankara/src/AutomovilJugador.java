@@ -16,7 +16,7 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 	private double coolDown;
 	private double duracionSkill;
 	private ImageView render;
-	private int health = 2;
+	private int health = 3;
 
 	private boolean modoFantasma=false;
 	private final int speed = 300; // pixeles x seg
@@ -37,7 +37,7 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
     
 
     private long lastTimeVidaRestada=-1;
-    private long  deltaTimeRestarVida=1000;
+    private long  deltaTimeRestarVida=100;
 	
 	public AutomovilJugador(int color, Punto posicion) {
 		super(color, posicion);
@@ -195,7 +195,7 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 	public void restarHealth() {
 		if(health>0)
 			health--;
-		else
+		if(health==0)
 			this.setDead(true);
 	}
 	
