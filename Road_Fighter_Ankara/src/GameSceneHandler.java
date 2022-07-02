@@ -26,6 +26,7 @@ public class GameSceneHandler extends SceneHandler {
 	double scoreFinal;
 	
 	Cooldown coolDownText;
+	Vida vidaText;
 	
 	private boolean movimiento;
 
@@ -137,11 +138,12 @@ public class GameSceneHandler extends SceneHandler {
 		botBuilder = new BotBuilder();
 		obstaculoBuilder = new ObstaculoBuilder();
 		coolDownText = new Cooldown();
+		vidaText = new Vida();
 
 		// Add to builder
 		GameObjectBuilder gameOB = GameObjectBuilder.getInstance();
 		gameOB.setRootNode(rootGroup);
-		gameOB.add(road, a1, botBuilder, obstaculoBuilder, score,coolDownText);
+		gameOB.add(road, a1, botBuilder, obstaculoBuilder, score,coolDownText,vidaText);
 
 		if (fullStart) {
 			addTimeEventsAnimationTimer();
@@ -186,14 +188,12 @@ public class GameSceneHandler extends SceneHandler {
 		
 		a1.updateModoFantasma();
 		coolDownText.updateCooldown(a1.getTiempoActivo(),a1.getCoolDown());
-	
-		scoreFinal = score.getScore();
-		
+		vidaText.updateVida(a1.getHealth());
 		if(movimiento) {
 			score.increase(1);
 		}
 		
-		
+		scoreFinal = road.getScore();
 
 		checkFinish();
 		if (!ended) {
@@ -223,7 +223,7 @@ public class GameSceneHandler extends SceneHandler {
 	}
 
 	public void checkFinish() {
-		if (scoreFinal > 300) {
+		if (scoreFinal > 10000) {
 			ended = true;
 			botBuilder.stopBuilding();
 			obstaculoBuilder.stopBuilding();
@@ -248,19 +248,9 @@ public class GameSceneHandler extends SceneHandler {
 			for (int j = 0; j < collideables.size(); j++) {
 				Collideable collideable = collideables.get(j);
 				Shape intersect = Shape.intersect(collidator.getCollider(), collideable.getCollider());
-
-				// TODO test times
-				// XXX Si el substract es distinto???
 				// Check intersects
 				if (intersect.getBoundsInLocal().getWidth() != -1) {
 					collidator.collide(collideable);
-					if(!a1.isModoFantasma()) {
-						score.decrease(20);
-					}
-					
-					if(score.getScore()<=0) {
-						a1.setDead(true);
-					}
 
 				} else {
 					// Check contains
