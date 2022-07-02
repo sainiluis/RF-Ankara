@@ -27,6 +27,8 @@ public class GameSceneHandler extends SceneHandler {
 	double scoreFinal;
 	private boolean gano=false;
 	
+	private boolean flag=true;
+	
 	Cooldown coolDownText;
 	Vida vidaText;
 	
@@ -145,6 +147,7 @@ public class GameSceneHandler extends SceneHandler {
 
 		score = new Score();
 		ganador.stop();
+		gano = false;
 		a1 = new AutomovilJugador(2, new Punto(380, 340));
 		a1.iniciarFX();
 		road = new Road();
@@ -204,6 +207,8 @@ public class GameSceneHandler extends SceneHandler {
 			acelerar.stop();
 			frenar.stop();
 			GameObjectBuilder.getInstance().getBots(false);
+			GameObjectBuilder.getInstance().remove(coolDownText);
+			GameObjectBuilder.getInstance().remove(vidaText);
 			GameObjectBuilder.getInstance().remove(score);
 
 		}
@@ -212,6 +217,8 @@ public class GameSceneHandler extends SceneHandler {
 	public void update(double delta) {
 		super.update(delta);
 		
+		
+		
 		a1.updateModoFantasma();
 		coolDownText.updateCooldown(a1.getTiempoActivo(),a1.getCoolDown());
 		vidaText.updateVida(a1.getHealth());
@@ -219,8 +226,8 @@ public class GameSceneHandler extends SceneHandler {
 			score.increase(1);
 		}
 		
-		scoreFinal = road.getScore();
-
+		scoreFinal =score.getScore();
+		
 		checkFinish();
 		if (!ended) {
 			checkColliders();
@@ -229,6 +236,7 @@ public class GameSceneHandler extends SceneHandler {
 				a1.deadAnimation();
 				gameOver = new GameOver(scoreFinal, !a1.isDead());
 				GameObjectBuilder.getInstance().add(gameOver);
+				GameObjectBuilder.getInstance().getObstaculos(false);
 				ended = true;
 				botBuilder.stopBuilding();
 				obstaculoBuilder.stopBuilding();
@@ -243,9 +251,12 @@ public class GameSceneHandler extends SceneHandler {
 				});
 			}
 		} else {
-			gameOver = new GameOver(scoreFinal, !a1.isDead());
-			GameObjectBuilder.getInstance().add(gameOver);
-		
+			if(flag) {
+				System.out.println("Entro");
+				gameOver = new GameOver(scoreFinal, !a1.isDead());
+				GameObjectBuilder.getInstance().add(gameOver);
+				flag=false;
+			}
 		}
 	}
 

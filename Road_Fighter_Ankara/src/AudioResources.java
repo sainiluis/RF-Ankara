@@ -15,7 +15,7 @@ public final class AudioResources {
 	}
 	
 	public static AudioClip getWinnerAudio() {
-		return create("files/we-are-the-champions-copia (mp3cut.net).mp3");
+		return create("files/we-are-the-champions v final.mp3");
 	}
 
 	public static AudioClip getFrenaAudio() {
@@ -24,6 +24,10 @@ public final class AudioResources {
 
 	public static AudioClip getAceleraAudio() {
 		return create("files/4CylSportsCarVari PE070901 NUEVO.mp3");
+	}
+	
+	public static AudioClip getCrashAudio() {
+		return create("files/soun-pato.mp3");
 	}
 	
 }

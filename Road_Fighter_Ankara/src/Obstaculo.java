@@ -29,7 +29,7 @@ public class Obstaculo extends GameObject implements Updatable, Renderable, Coll
 
 		speedUp = true;
 
-		collider = new Rectangle(posicion.getX() - width / 2, posicion.getY()  - height , width, height);
+		collider = new Rectangle(posicion.getX() - width / 2, posicion.getY()  - height , width*0.8, height*0.8);
 		collider.setFill(null);
 		collider.setStroke(Color.FUCHSIA);
 		

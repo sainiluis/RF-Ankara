@@ -37,9 +37,9 @@ public class AutomovilBot extends Automovil implements Updatable, Renderable, Co
 		setY(posicion.getY());
 	}
 
-//	public void iniciarFX() {
-//		
-//	}
+	public void iniciarFX() {
+		
+	}
 
 	@Override
 	public void update(double deltaTime) {

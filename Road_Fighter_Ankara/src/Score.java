@@ -21,7 +21,7 @@ public class Score extends GameObject implements Renderable {
 //	private AudioClip pointAudio;
 
 	public Score() {
-		scoreText = new Text(" Score:\n" + score);
+		scoreText = new Text(" Score:\n" + (int)score);
 
 		render = new VBox(scoreText);
 		render.setSpacing(5);
@@ -48,10 +48,6 @@ public class Score extends GameObject implements Renderable {
 	}
 
 	public void increase(double n) {
-		
-//		if(b==true) {
-//			this.score+=1;
-//		}
 		
 		this.score+=n;
 

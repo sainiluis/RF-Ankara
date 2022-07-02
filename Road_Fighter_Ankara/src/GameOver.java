@@ -16,17 +16,18 @@ public class GameOver extends GameObject implements Renderable {
 	private VBox render;
 
 	public GameOver(double score, boolean gano) {
+		
+		Font font = Font.loadFont(ClassLoader.getSystemResource("files/Pixeled.ttf").toString(), 35);
+		
 		if (gano) {
 			gameOverText = new Text("        CONGRATULATIONS\n       Ha ganado!");
-			textRestart = new Text("\n\n\n       Press 'R' to restart");
+			textRestart = new Text("\n       Press 'R' to restart");
 			gameOverText.setFill(Color.GREEN);
 
 		} else {
-			if(score <= 0) {
-				gameOverText = new Text("      Game Over\n\tSu puntaje fue: " + 0);
-				textRestart = new Text("\n\n\n       Press 'R' to restart");
+				gameOverText = new Text("      Game Over\n\tSu puntaje fue: " + (int)(score));
+				textRestart = new Text("\n       Press 'R' to restart");
 				gameOverText.setFill(Color.RED);
-			}
 		}
 		render = new VBox(gameOverText, textRestart);
 		render.setSpacing(5);
@@ -36,10 +37,10 @@ public class GameOver extends GameObject implements Renderable {
 		render.setPrefWidth(100);
 
 		gameOverText.setTextAlignment(TextAlignment.CENTER);
-		gameOverText.setFont(Font.font("Bauhaus 93", 60));
+		gameOverText.setFont(font);
 
 		textRestart.setTextAlignment(TextAlignment.CENTER);
-		textRestart.setFont(Font.font("Consolas", 35));
+		textRestart.setFont(font);
 		textRestart.setFill(Color.BLACK);
 
 		DropShadow ds = new DropShadow();
