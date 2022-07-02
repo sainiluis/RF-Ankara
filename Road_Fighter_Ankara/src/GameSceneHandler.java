@@ -24,6 +24,10 @@ public class GameSceneHandler extends SceneHandler {
 	boolean started = false;
 	boolean ended = false;
 	double scoreFinal;
+	
+	Cooldown coolDownText;
+	
+	private boolean movimiento;
 
 	public GameSceneHandler(RoadFighterGame g) {
 		super(g);
@@ -53,15 +57,23 @@ public class GameSceneHandler extends SceneHandler {
 				switch (e.getCode()) {
 				case W:
 				case UP:
+					//score.increase(true);
 					makeAction(true);
 					break;
 				case A:
 				case LEFT:
-					a1.setDirectionLeft(true);
+					//score.increase(true);
+					if(movimiento) {
+						a1.setDirectionLeft(true);
+					}
+					
 					break;
 				case D:
 				case RIGHT:
-					a1.setDirectionRight(true);
+					//score.increase(true);
+					if(movimiento) {
+						a1.setDirectionRight(true);
+					}
 					break;
 				case R:
 					restart();
@@ -71,7 +83,8 @@ public class GameSceneHandler extends SceneHandler {
 					g.startMenu();
 					break;
 				case Z:
-					a1.iniciarHabilidad();
+                    a1.iniciarHabilidad();
+                    break;
 				default:
 					break;
 				}
@@ -84,17 +97,19 @@ public class GameSceneHandler extends SceneHandler {
 				switch (e.getCode()) {
 				case W:
 				case UP:
-					score.increase(road.getScore());
+					//score.increase(false);
 					makeAction(false);
 					botBuilder.stopBuilding();
 					obstaculoBuilder.stopBuilding();
 					break;
 				case A:
 				case LEFT:
+					//score.increase(false);
 					a1.setDirectionLeft(false);
 					break;
 				case D:
 				case RIGHT:
+					//score.increase(false);
 					a1.setDirectionRight(false);
 					break;
 				case R:
@@ -121,11 +136,12 @@ public class GameSceneHandler extends SceneHandler {
 		road = new Road();
 		botBuilder = new BotBuilder();
 		obstaculoBuilder = new ObstaculoBuilder();
+		coolDownText = new Cooldown();
 
 		// Add to builder
 		GameObjectBuilder gameOB = GameObjectBuilder.getInstance();
 		gameOB.setRootNode(rootGroup);
-		gameOB.add(road, a1, botBuilder, obstaculoBuilder, score);
+		gameOB.add(road, a1, botBuilder, obstaculoBuilder, score,coolDownText);
 
 		if (fullStart) {
 			addTimeEventsAnimationTimer();
@@ -146,6 +162,8 @@ public class GameSceneHandler extends SceneHandler {
 	}
 
 	private void makeAction(boolean b) {
+		
+		movimiento=b;
 
 		if (!ended) {
 			started = b;
@@ -165,15 +183,21 @@ public class GameSceneHandler extends SceneHandler {
 
 	public void update(double delta) {
 		super.update(delta);
-		score.increase(road.getScore());
-		scoreFinal = road.getScore();
+		
 		a1.updateModoFantasma();
+		coolDownText.updateCooldown(a1.getTiempoActivo(),a1.getCoolDown());
+		
+		if(movimiento) {
+			score.increase(1);
+		}
+		
+		scoreFinal = road.getScore();
 
 		checkFinish();
 		if (!ended) {
 			checkColliders();
 			if (a1.isDead()) {
-				
+
 				a1.deadAnimation();
 				gameOver = new GameOver(scoreFinal, !a1.isDead());
 				GameObjectBuilder.getInstance().add(gameOver);
@@ -209,7 +233,6 @@ public class GameSceneHandler extends SceneHandler {
 			tt.setOnFinished(event -> {
 				scene.getRoot().setTranslateY(0);
 			});
-
 		}
 	}
 
@@ -223,15 +246,17 @@ public class GameSceneHandler extends SceneHandler {
 			for (int j = 0; j < collideables.size(); j++) {
 				Collideable collideable = collideables.get(j);
 				Shape intersect = Shape.intersect(collidator.getCollider(), collideable.getCollider());
-
-				// TODO test times
-				// XXX Si el substract es distinto???
 				// Check intersects
 				if (intersect.getBoundsInLocal().getWidth() != -1) {
-//					road.setSpeedUp(false);
-//					GameObjectBuilder.getInstance().getBots(false);
-//					GameObjectBuilder.getInstance().getObstaculos(false);
 					collidator.collide(collideable);
+					if(!a1.isModoFantasma()) {
+						a1.restarHealth();
+					}
+					
+					if(score.getScore()<=0) {
+						a1.setDead(true);
+					}
+
 				} else {
 					// Check contains
 					Bounds collideableBounds = collideable.getCollider().getBoundsInLocal();
@@ -240,13 +265,6 @@ public class GameSceneHandler extends SceneHandler {
 						
 					}
 				}
-				
-//				if(!(intersect.getBoundsInLocal().getWidth() != -1)) {
-//					if(a1.getChoque()) {
-//						a1.setChoque(false);
-//						System.out.println("Chocó");
-//					}
-//				}
 				
 			}
 		}

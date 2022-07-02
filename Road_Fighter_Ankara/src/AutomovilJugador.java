@@ -16,7 +16,7 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 	private double coolDown;
 	private double duracionSkill;
 	private ImageView render;
-	private int health = 2;
+	private int health = 3;
 
 	private final int speed = 300; // pixeles x seg
 	private boolean directionLeft = false;
@@ -106,6 +106,7 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 		this.posicion.sumarX(sentido);
 	}
 
+<<<<<<< Updated upstream
 	public void serChocado(Automovil chocador) {
 
 		if (!this.isModoFantasma()) {
@@ -138,6 +139,8 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 			this.setModoFantasma(false);
 		}
 	}
+=======
+>>>>>>> Stashed changes
 
 	public void destroy() {
 		// TODO Auto-generated method stub
@@ -231,7 +234,11 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 	}
 	
 	public void restarHealth() {
-		health--;
+		
+		if(health>0)
+			health--;
+		else
+			this.setDead(true);
 	}
 	
 	public void setDead(boolean b) {
