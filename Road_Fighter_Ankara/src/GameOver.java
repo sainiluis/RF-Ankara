@@ -22,10 +22,11 @@ public class GameOver extends GameObject implements Renderable {
 			gameOverText.setFill(Color.GREEN);
 
 		} else {
-			gameOverText = new Text("      Game Over\n\tSu puntaje fue: " + (int) score / 10);
-			textRestart = new Text("\n\n\n       Press 'R' to restart");
-			gameOverText.setFill(Color.RED);
-
+			if(score <= 0) {
+				gameOverText = new Text("      Game Over\n\tSu puntaje fue: " + 0);
+				textRestart = new Text("\n\n\n       Press 'R' to restart");
+				gameOverText.setFill(Color.RED);
+			}
 		}
 		render = new VBox(gameOverText, textRestart);
 		render.setSpacing(5);
