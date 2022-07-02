@@ -186,12 +186,14 @@ public class GameSceneHandler extends SceneHandler {
 		
 		a1.updateModoFantasma();
 		coolDownText.updateCooldown(a1.getTiempoActivo(),a1.getCoolDown());
+	
+		scoreFinal = score.getScore();
 		
 		if(movimiento) {
 			score.increase(1);
 		}
 		
-		scoreFinal = road.getScore();
+		
 
 		checkFinish();
 		if (!ended) {
@@ -221,7 +223,7 @@ public class GameSceneHandler extends SceneHandler {
 	}
 
 	public void checkFinish() {
-		if (scoreFinal > 10000) {
+		if (scoreFinal > 300) {
 			ended = true;
 			botBuilder.stopBuilding();
 			obstaculoBuilder.stopBuilding();

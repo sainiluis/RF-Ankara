@@ -35,7 +35,7 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
     private long  timeExecutionModoFantasma=10000;
     
     private double diferenciaCooldown;
-	
+
 	public AutomovilJugador(int color, Punto posicion) {
 		super(color, posicion);
 		this.coolDown = 25;
@@ -45,7 +45,7 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 		setX(posicion.getX());
 		setY(posicion.getY());
 	}
-	
+
 	public void iniciarFX() {
 		collider = new Rectangle(posicion.getX() - width / 2, posicion.getY() - height , 45, 88);
 		collider.setFill(null);
@@ -206,7 +206,7 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 
 	@Override
 	public void update(double deltaTime) {
-
+ 
 		this.deltaTime=deltaTime;
 		if (directionLeft || directionRight) {
 			int direction = directionLeft ? -1 : (directionRight ? 1 : 0);

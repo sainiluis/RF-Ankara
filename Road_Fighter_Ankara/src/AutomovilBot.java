@@ -13,11 +13,17 @@ public class AutomovilBot extends Automovil implements Updatable, Renderable, Co
 	private ImageView render;
 	private boolean speedUp;
 	private double posY = 0;
-
+	private boolean fx=false;
+	
 	public AutomovilBot(int color, Punto posicion) {
 		super(color, posicion);
 		this.velocidad = VELOCIDAD_CONSTANTE;
-		
+
+		setX(posicion.getX());
+		setY(posicion.getY());
+	}
+
+	public void iniciarFX() {
 		int r = (int) (Math.random() * (7));
 
 		Image spriteImages = new Image("file:src/files/bot" + "0" + r + ".png", 40, 78, false, false);
@@ -29,18 +35,9 @@ public class AutomovilBot extends Automovil implements Updatable, Renderable, Co
 		collider = new Rectangle(posicion.getX() - width / 2, posicion.getY()  - height , width, height);
 		collider.setFill(null);
 		collider.setStroke(Color.FUCHSIA);
-		
+
 		render.setViewOrder(10);
-
-		setX(posicion.getX());
-		setY(posicion.getY());
 	}
-
-//	@Override
-//	public void explotar() {
-//		// TODO Auto-generated method stub
-//		// Eliminar auto
-//	}
 
 	@Override
 	public void update(double deltaTime) {
@@ -54,26 +51,6 @@ public class AutomovilBot extends Automovil implements Updatable, Renderable, Co
 			collider.setY(posY-100);
 		}
 	}
-
-//	public void serChocado(Automovil chocador) {
-//
-//		if (!chocador.isModoFantasma()) {
-//			int sentidoChoque = -1;
-//			if (this.posicion.getX() > chocador.posicion.getX()) {
-//				sentidoChoque = 1;
-//			}
-//			this.perderControl(sentidoChoque);
-//			this.acelerar();
-//			chocador.frenar();
-//			chocador.perderControl(sentidoChoque * -1);
-//		}
-//	}
-
-//	@Override
-//	public void perderControl(int sentido) {
-//		this.posicion.sumarX(sentido);
-//
-//	}
 
 	@Override
 	public Node getRender() {
