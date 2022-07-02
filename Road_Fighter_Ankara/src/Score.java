@@ -26,11 +26,14 @@ public class Score extends GameObject implements Renderable {
 		render = new VBox(scoreText);
 		render.setSpacing(5);
 		render.setAlignment(Pos.TOP_RIGHT);
+		render.setTranslateX(30);
 		render.setTranslateY(Y);
 		render.setPrefWidth(100);
 
+		Font font = Font.loadFont(ClassLoader.getSystemResource("files/Pixeled.ttf").toString(), 20);
+		
 		scoreText.setTextAlignment(TextAlignment.RIGHT);
-		scoreText.setFont(Font.font("Bauhaus 93", 40));
+		scoreText.setFont(font);
 		scoreText.setFill(Color.BLACK);
 		
 

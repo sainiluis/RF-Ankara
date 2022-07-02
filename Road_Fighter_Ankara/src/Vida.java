@@ -23,6 +23,8 @@ public class Vida extends GameObject implements Renderable {
 		corazones.setFill(Color.GREEN);
 		vidaText.setFill(Color.BLACK);
 		
+		Font font = Font.loadFont(ClassLoader.getSystemResource("files/Pixeled.ttf").toString(), 20);
+		
 		render = new VBox(vidaText,corazones);
 		render.setSpacing(5);
 		render.setAlignment(Pos.CENTER);
@@ -31,9 +33,13 @@ public class Vida extends GameObject implements Renderable {
 		render.setPrefWidth(1300);
 
 		vidaText.setTextAlignment(TextAlignment.CENTER);
-		vidaText.setFont(Font.font("Bauhaus 93", 40));
+		vidaText.setFont(font);
 		corazones.setTextAlignment(TextAlignment.CENTER);
 		corazones.setFont(Font.font("Arial", 40));
+		
+		DropShadow ds = new DropShadow();
+		ds.setColor(Color.WHITE);
+		corazones.setEffect(ds);
 
 	}
 	
