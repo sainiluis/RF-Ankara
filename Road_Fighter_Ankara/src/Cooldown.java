@@ -22,12 +22,13 @@ public class Cooldown extends GameObject implements Renderable {
 		render = new VBox(coolDown);
 		render.setSpacing(5);
 		render.setAlignment(Pos.CENTER);
+		render.setTranslateX(15);
 		render.setTranslateY(Y);
 
 		render.setPrefWidth(100);
 
 		coolDown.setTextAlignment(TextAlignment.CENTER);
-		Font font = Font.loadFont(ClassLoader.getSystemResource("files/road-fighter-score.ttf").toString(), 30);
+		Font font = Font.loadFont(ClassLoader.getSystemResource("files/Pixeled.ttf").toString(), 12);
 		coolDown.setFont(font);
 
 		DropShadow ds = new DropShadow();
@@ -47,8 +48,9 @@ public class Cooldown extends GameObject implements Renderable {
 			coolDown.setText("Cooldown: " + (int)cooldown);
 			coolDown.setFill(Color.RED);
 		}else {
-			coolDown.setText("Presioná Z para activar \n habilidad");
-			coolDown.setFill(Color.GREEN);
+			coolDown.setText("Presione Z \npara activar \n habilidad");
+			coolDown.setEffect(1);
+			coolDown.setFill(Color.BLACK);
 		}
 		
 	}
