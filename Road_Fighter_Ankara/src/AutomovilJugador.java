@@ -193,7 +193,7 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 	}
 	
 	public void restarHealth() {
-		if(health>0)
+		if(health>0 && !this.modoFantasma)
 			health--;
 		if(health==0)
 			this.setDead(true);
