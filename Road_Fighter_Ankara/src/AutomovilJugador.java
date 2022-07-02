@@ -6,6 +6,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -35,6 +36,7 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
     private long  timeExecutionModoFantasma=10000;
     
     private double diferenciaCooldown;
+	private AudioClip chocarAudio;
 	
 	public AutomovilJugador(int color, Punto posicion) {
 		super(color, posicion);
@@ -234,14 +236,18 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
             setX(posicion.getX() + speed * deltaTime * 4 );
             collider.setX(posicion.getX());
             System.out.println("Chocó");
+          
         }
     }
 
 	public boolean isDead() {
+		  
 		return dead;
 	}
 
 	public void deadAnimation() {
+		chocarAudio = AudioResources.getChoqueAudio();
+        chocarAudio.play();
 		explotionAnimation.play();
 	}
 	

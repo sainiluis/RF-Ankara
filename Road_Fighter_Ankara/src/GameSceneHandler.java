@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import javafx.util.Duration;
@@ -24,11 +25,16 @@ public class GameSceneHandler extends SceneHandler {
 	boolean started = false;
 	boolean ended = false;
 	double scoreFinal;
+	private boolean gano=false;
 	
 	Cooldown coolDownText;
 	
 	private boolean movimiento;
-
+	private AudioClip frenar = AudioResources.getFrenaAudio();
+	private AudioClip acelerar = AudioResources.getAceleraAudio();
+	private AudioClip ganador = AudioResources.getWinnerAudio();
+	
+	
 	public GameSceneHandler(RoadFighterGame g) {
 		super(g);
 
@@ -59,6 +65,8 @@ public class GameSceneHandler extends SceneHandler {
 				case UP:
 					//score.increase(true);
 					makeAction(true);
+					
+					
 					break;
 				case A:
 				case LEFT:
@@ -101,6 +109,10 @@ public class GameSceneHandler extends SceneHandler {
 					makeAction(false);
 					botBuilder.stopBuilding();
 					obstaculoBuilder.stopBuilding();
+//					acelerar.stop();
+//					frenar.play();
+//					estaAcelerando=0;
+					
 					break;
 				case A:
 				case LEFT:
@@ -131,6 +143,7 @@ public class GameSceneHandler extends SceneHandler {
 		scene.setRoot(rootGroup);
 
 		score = new Score();
+		ganador.stop();
 		a1 = new AutomovilJugador(2, new Punto(380, 340));
 		a1.iniciarFX();
 		road = new Road();
@@ -164,6 +177,17 @@ public class GameSceneHandler extends SceneHandler {
 	private void makeAction(boolean b) {
 		
 		movimiento=b;
+		
+		if(b && road.getSpeedUp()==false) {
+			frenar.stop();
+			acelerar.play();
+			//estaAcelerando=1;
+			
+		}else if (!b && road.getSpeedUp()) {
+			acelerar.stop();
+			frenar.play();
+			
+		}
 
 		if (!ended) {
 			started = b;
@@ -175,6 +199,8 @@ public class GameSceneHandler extends SceneHandler {
 			
 		} else {
 			road.setSpeedUp(false);
+			acelerar.stop();
+			frenar.stop();
 			GameObjectBuilder.getInstance().getBots(false);
 			GameObjectBuilder.getInstance().remove(score);
 
@@ -217,12 +243,19 @@ public class GameSceneHandler extends SceneHandler {
 		} else {
 			gameOver = new GameOver(scoreFinal, !a1.isDead());
 			GameObjectBuilder.getInstance().add(gameOver);
+		
 		}
 	}
 
 	public void checkFinish() {
-		if (scoreFinal > 10000) {
+		
+		if (score.getScore() > 1000) {
 			ended = true;
+			if(!gano) {
+				ganador.play();
+				gano=true;
+			}
+			
 			botBuilder.stopBuilding();
 			obstaculoBuilder.stopBuilding();
 			a1.setSpeedUp(false);
@@ -232,7 +265,10 @@ public class GameSceneHandler extends SceneHandler {
 			tt.playFromStart();
 			tt.setOnFinished(event -> {
 				scene.getRoot().setTranslateY(0);
+				
 			});
+			
+			
 		}
 	}
 

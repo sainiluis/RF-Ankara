@@ -49,7 +49,7 @@ public class Cooldown extends GameObject implements Renderable {
 			coolDown.setFill(Color.RED);
 		}else {
 			coolDown.setText("Presione Z \npara activar \n habilidad");
-			coolDown.setEffect(1);
+			//coolDown.setEffect(1);
 			coolDown.setFill(Color.BLACK);
 		}
 		
