@@ -6,6 +6,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -16,7 +17,7 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 	private double coolDown;
 	private double duracionSkill;
 	private ImageView render;
-	private int health = 3;
+	private int health = 2;
 
 	private boolean modoFantasma=false;
 	private final int speed = 300; // pixeles x seg
@@ -34,10 +35,8 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
     private long timeModoFantasma=-1;
     private long  timeExecutionModoFantasma=10000;
     
-    
-
-    private long lastTimeVidaRestada=-1;
-    private long  deltaTimeRestarVida=100;
+    private double diferenciaCooldown;
+	private AudioClip chocarAudio;
 	
 	public AutomovilJugador(int color, Punto posicion) {
 		super(color, posicion);
@@ -90,10 +89,75 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 		}
 	}
 
+//	@Override
+//	public void explotar() {
+//		if (this.isModoFantasma() == false) {
+//			this.velocidad = 0;
+//		}
+//
+//	}
+//
+//	@Override
+//	public void perderControl(int sentido) {
+//		if (this.isModoFantasma() == false) {
+//			this.posicion.sumarX(sentido);
+//		}
+//	}
+
 	public void moverse(double sentido) {
 		this.posicion.sumarX(sentido);
 	}
 
+//	public void serChocado(Automovil chocador) {
+//
+//		if (!this.isModoFantasma()) {
+//			int sentidoChoque = -1;
+//			if (this.posicion.getX() > chocador.posicion.getX()) {
+//				sentidoChoque = 1;
+//			}
+//			this.perderControl(sentidoChoque);
+//			this.acelerar();
+//			chocador.frenar();
+//			chocador.perderControl(sentidoChoque * -1);
+//		}
+//	}
+
+//	public void iniciarHabilidad() {
+//		this.setModoFantasma(true);
+//
+//		Timer timer = new Timer();
+//
+//		TimerTask tarea = new TimerTask() {
+//
+//			@Override
+//			public void run() {
+//				duracionSkill--;
+//
+//				if (duracionSkill == 0) {
+//					setModoFantasma(false);
+//					timer.cancel();
+//				}
+//			}
+//		};
+//
+//		timer.scheduleAtFixedRate(tarea, 0, 1000);
+//
+//		Timer timerCooldown = new Timer();
+//
+//		TimerTask tarea2 = new TimerTask() {
+//
+//			@Override
+//			public void run() {
+//				coolDown--;
+//
+//				if (coolDown == 0) {
+//					timerCooldown.cancel();
+//				}
+//			}
+//		};
+//
+//		timerCooldown.scheduleAtFixedRate(tarea2, 0, 1000);
+//	}
 
 	public void destroy() {
 		// TODO Auto-generated method stub
@@ -165,26 +229,25 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 	public void collide(Collideable collideable) {
         //Si choco un obstaculo pierdo el control
         if(collideable.getClass().equals(Obstaculo.class) && !modoFantasma) {
-                setX(posicion.getX() + speed * deltaTime * 4 );    
+                setX(posicion.getX() + speed * deltaTime * 4 );
                 collider.setX(posicion.getX());
         }
         else if(collideable.getClass().equals(AutomovilBot.class) && !modoFantasma) {
             setX(posicion.getX() + speed * deltaTime * 4 );
             collider.setX(posicion.getX());
             System.out.println("Chocó");
+          
         }
-        
-    	if(System.currentTimeMillis() > this.lastTimeVidaRestada + this.deltaTimeRestarVida) {
-    		this.restarHealth();
-    		this.lastTimeVidaRestada=System.currentTimeMillis();
-    	}
     }
 
 	public boolean isDead() {
+		  
 		return dead;
 	}
 
 	public void deadAnimation() {
+		chocarAudio = AudioResources.getChoqueAudio();
+        chocarAudio.play();
 		explotionAnimation.play();
 	}
 	
@@ -193,10 +256,7 @@ public class AutomovilJugador extends Automovil implements Updatable, Renderable
 	}
 	
 	public void restarHealth() {
-		if(health>0 && !this.modoFantasma)
-			health--;
-		if(health==0)
-			this.setDead(true);
+		health--;
 	}
 	
 	public void setDead(boolean b) {

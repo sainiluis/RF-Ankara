@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 
 
@@ -15,6 +16,7 @@ public class MenuSceneHandler extends SceneHandler {
 	private Background background;
 	private Group rootGroup;
 	private TextoComenzar textoComenzar;
+	private AudioClip menuAudio;
 	
 	public MenuSceneHandler(RoadFighterGame g) {
 		super(g);	
@@ -63,6 +65,10 @@ public class MenuSceneHandler extends SceneHandler {
 		
 		background = new Background();
 		textoComenzar = new TextoComenzar();
+		
+		menuAudio = AudioResources.getMenuAudio();
+		menuAudio.play();
+		
 
 		GameObjectBuilder gameOB = GameObjectBuilder.getInstance();
 		gameOB.setRootNode(baseGroup);
@@ -75,6 +81,8 @@ public class MenuSceneHandler extends SceneHandler {
 
 	public void unload() {
 		rootGroup.getChildren().remove(0);
+		menuAudio.stop();
+		
 		super.unload();
 	}
 	

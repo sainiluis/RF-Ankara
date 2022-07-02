@@ -50,6 +50,10 @@ public class Road extends GameObject implements Updatable, Renderable {
 	public void setSpeedUp(boolean b) {
 		speedUp=b;
 	}
+	
+	public boolean getSpeedUp() {
+		return this.speedUp;
+	}
 
 	@Override
 	public void update(double deltaTime) {
