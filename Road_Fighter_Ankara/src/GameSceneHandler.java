@@ -252,13 +252,6 @@ public class GameSceneHandler extends SceneHandler {
 				// Check intersects
 				if (intersect.getBoundsInLocal().getWidth() != -1) {
 					collidator.collide(collideable);
-					if(!a1.isModoFantasma()) {
-						score.decrease(20);
-					}
-					
-					if(score.getScore()<=0) {
-						a1.setDead(true);
-					}
 
 				} else {
 					// Check contains
