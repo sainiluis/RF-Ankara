@@ -18,12 +18,7 @@ public class AutomovilBot extends Automovil implements Updatable, Renderable, Co
 	public AutomovilBot(int color, Punto posicion) {
 		super(color, posicion);
 		this.velocidad = VELOCIDAD_CONSTANTE;
-
-		setX(posicion.getX());
-		setY(posicion.getY());
-	}
-
-	public void iniciarFX() {
+		
 		int r = (int) (Math.random() * (7));
 
 		Image spriteImages = new Image("file:src/files/bot" + "0" + r + ".png", 40, 78, false, false);
@@ -37,7 +32,14 @@ public class AutomovilBot extends Automovil implements Updatable, Renderable, Co
 		collider.setStroke(Color.FUCHSIA);
 
 		render.setViewOrder(10);
+
+		setX(posicion.getX());
+		setY(posicion.getY());
 	}
+
+//	public void iniciarFX() {
+//		
+//	}
 
 	@Override
 	public void update(double deltaTime) {
